@@ -7,3 +7,8 @@ event_list:
   path: /api/v1/events
   controller: App\Controller\EventController::getEvents
   methods: GET
+
+event_delete:
+  path: /api/v1/events/{id}
+  controller: App\Controller\EventController::deleteEvent
+  methods: DELETE

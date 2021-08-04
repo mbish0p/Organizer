@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Repository\EventRepository;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,11 @@ class EventController extends AbstractApiController
     {
 
         $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
-        return $this->json($events);
+        return $this->respond($events);
     }
 
     public function createEvent(Request $request): Response
     {
-
         $form = $this->buildForm(EventType::class);
         $form->handleRequest($request);
         $name =  $request->get('name');
@@ -31,10 +31,25 @@ class EventController extends AbstractApiController
         $event->setDescription($descrption);
 
 
-        $gm = $this->getDoctrine()->getManager();
-        $gm->persist($event);
-        $gm->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($event);
+        $em->flush();
 
-        return $this->json($event);
+        return $this->respond($event);
+    }
+
+    public function deleteEvent(int $id, EventRepository $eventRepository): Response
+    {
+        $event = $eventRepository->findById($id);
+
+        if (!$event) {
+            return $this->respond(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($event);
+        $em->flush();
+
+        return $this->respond($event);
     }
 }
