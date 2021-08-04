@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use DateTime;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
-class EventController extends AbstractController
+class EventController extends AbstractApiController
 {
     public function getEvents(Request $request): Response
     {
@@ -22,13 +19,22 @@ class EventController extends AbstractController
 
     public function createEvent(Request $request): Response
     {
-        // dump($request);
-        $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
+
+        $form = $this->buildForm(EventType::class);
         $form->handleRequest($request);
+        $name =  $request->get('name');
+        $descrption = $request->get('description');
 
-        $data = $form->getData();
+        $event = new Event();
+        $event->setDate(\DateTime::createFromFormat('Y-m-d', $request->get('date')));
+        $event->setName($name);
+        $event->setDescription($descrption);
 
-        return $this->json($data);
+
+        $gm = $this->getDoctrine()->getManager();
+        $gm->persist($event);
+        $gm->flush();
+
+        return $this->json($event);
     }
 }
