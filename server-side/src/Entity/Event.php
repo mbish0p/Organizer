@@ -32,6 +32,14 @@ class Event
      */
     private $description;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="events")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+
+    private $userId;
+
     public function getId(): ?int
     {
         return $this->id;
