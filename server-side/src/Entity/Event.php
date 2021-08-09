@@ -72,4 +72,32 @@ class Event
 
         return $this;
     }
+
+    public function updateEvent(Event $request): self
+    {
+        if ($request->name) {
+            $this->name = $request->name;
+        }
+
+        if ($request->date) {
+            $this->date = $request->date;
+        }
+
+        if ($request->description) {
+            $this->description = $request->description;
+        }
+
+        return $this;
+    }
+
+    function setData(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if ($key == 'date') {
+                $this->$key = (\DateTime::createFromFormat('Y-m-d', $value));
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

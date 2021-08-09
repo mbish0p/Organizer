@@ -52,4 +52,24 @@ class EventController extends AbstractApiController
 
         return $this->respond($event);
     }
+
+    public function editEvent(int $id, EventRepository $eventRepository, Request $request): Response
+    {
+        $event = $eventRepository->findById($id);
+
+        if (!$event) {
+            return $this->respond(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $newEvent = new Event();
+        $newEvent->setData($request->toArray());
+
+        $event->updateEvent($newEvent);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($event);
+        $em->flush();
+
+        return $this->respond($event);
+    }
 }

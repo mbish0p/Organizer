@@ -12,3 +12,8 @@ event_delete:
   path: /api/v1/events/{id}
   controller: App\Controller\EventController::deleteEvent
   methods: DELETE
+
+event_edit:
+  path: /api/v1/events/{id}
+  controller: App\Controller\EventController::editEvent
+  methods: PUT
