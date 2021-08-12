@@ -17,3 +17,8 @@ event_edit:
   path: /api/v1/events/{id}
   controller: App\Controller\EventController::editEvent
   methods: PUT
+
+api_login_check:
+  path: /api/v1/login_check
+  controller: App\Controller\UserController::userRegistration
+  methods: POST
