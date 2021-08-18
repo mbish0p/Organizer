@@ -139,6 +139,13 @@ class User implements UserInterface
     {
         return $this->password;
     }
+
+    public function setPassword($password): User
+    {
+        $this->password = $password;
+        return $this;
+    }
+
     public function getSalt()
     {
         // leaving blank - I don't need/have a password!

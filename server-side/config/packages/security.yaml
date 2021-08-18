@@ -3,7 +3,7 @@ security:
     enable_authenticator_manager: true
     password_hashers:
         App\Entity\User:
-            algorithm: auto
+            algorithm: "auto"
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         app_user_provider:
@@ -47,4 +47,5 @@ security:
     access_control:
         - { path: ^/api/v1/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/user, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1, roles: IS_AUTHENTICATED_FULLY }
